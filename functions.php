@@ -83,6 +83,47 @@ if ( ! function_exists( 'underscoresass_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'underscoresass_setup' );
 
+ /**
+  * Register custom fonts.
+  * This will allow translators to turn the font off if it does not support the translation.
+  */
+ function underscoresass_fonts_url() {
+	 $fonts_url = '';
+
+	 /*
+	  * Translators: If there are characters in your language that are not
+	  * supported by Source Sans Pro, PT Serif, translate this to 'off'. Do not translate
+	  * into your own language.
+	  */
+	 $source_sans_pro = _x( 'on', 'Source Sans Pro font: on or off', 'underscoresass' );
+
+	 $PT_serif = _x( 'on', 'PT Serif font: on or off', 'underscoresass' );
+
+	 $font_families = array();
+
+	 if ( 'off' !== $source_sans_pro ) {
+
+		 $font_families[] = 'Source Sans Pro:400,400i,600,900';
+	 }
+
+	 if ( 'off' !== $PT_serif ) {
+
+		 $font_families[] = 'PT Serif:400,400i,700,700i';
+	 }
+
+	 if ( in_array( 'on', array( $source_sans_pro, $PT_serif ) ) ) {
+
+		 $query_args = array(
+			 'family' => urlencode( implode( '|', $font_families ) ),
+			 'subset' => urlencode( 'latin,latin-ext' ),
+		 );
+
+		 $fonts_url = add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
+	 }
+
+	 return esc_url_raw( $fonts_url );
+ }
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -118,7 +159,7 @@ add_action( 'widgets_init', 'underscoresass_widgets_init' );
  */
 function underscoresass_scripts() {
 	// Enqueue Google Fonts: Source Sans Pro, PT Script
-	wp_enqueue_style( 'underscoresass-fonts', 'https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i|Source+Sans+Pro:400,400i,600,900' );
+	wp_enqueue_style( 'underscoresass-fonts', 'underscoresass_fonts_url' );
 
 	wp_enqueue_style( 'underscoresass-style', get_stylesheet_uri() );
 
