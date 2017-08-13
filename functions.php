@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * SassyUnderscore functions and definitions
  *
@@ -117,6 +117,9 @@ add_action( 'widgets_init', 'underscoresass_widgets_init' );
  * Enqueue scripts and styles.
  */
 function underscoresass_scripts() {
+	// Enqueue Google Fonts: Source Sans Pro, PT Script
+	wp_enqueue_style( 'underscoresass-fonts', 'https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i|Source+Sans+Pro:400,400i,600,900' );
+
 	wp_enqueue_style( 'underscoresass-style', get_stylesheet_uri() );
 
 	wp_enqueue_script( 'underscoresass-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
